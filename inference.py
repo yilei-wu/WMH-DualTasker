@@ -123,7 +123,7 @@ def adaptive_postprocessing(pred, paddings):
     return pred
 
 
-def perform_inference(model, volume, intensity_percentile=99.0, cam_percentile=96.5, device='cuda'):
+def perform_inference(model, volume, intensity_percentile=99.2, cam_percentile=96.5, device='cuda'):
     """
     Perform inference on a single volume
     
@@ -208,10 +208,6 @@ def save_results(rating, segmentation, cam, output_dir, affine=None, paddings=No
     # Save segmentation as NIfTI (original size)
     seg_img = nib.Nifti1Image(segmentation_original.astype(np.uint8), affine)
     nib.save(seg_img, os.path.join(output_dir, 'wmh_segmentation.nii.gz'))
-    
-    # Save CAM as NIfTI (original size)
-    cam_img = nib.Nifti1Image(cam_original.astype(np.float32), affine)
-    nib.save(cam_img, os.path.join(output_dir, 'class_activation_map.nii.gz'))
     
     
     print(f"All results saved to: {output_dir}")

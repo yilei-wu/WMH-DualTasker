@@ -20,7 +20,7 @@
 ## Model Download
 
 Download the pre-trained model weights:
-- **Model weights**: [Download here](https://your-download-link.com/model_weights.pth)
+- **Model weights**: [Download here](./for_test/model.pth)
 - Place the downloaded `.pth` file in your desired location
 
 ## Inference
@@ -33,7 +33,7 @@ python inference.py --input /path/to/flair_volume.nii.gz \
                    --model_path /path/to/model_weights.pth
 ```
 
-### With Brain Mask (Recommended)
+### With Brain Mask
 ```bash
 python inference.py --input /path/to/flair_volume.nii.gz \
                    --model_path /path/to/model_weights.pth \
@@ -52,13 +52,11 @@ python inference.py --input /path/to/flair_volume.nii.gz \
 ### Outputs
 - `visual_rating.txt`: Visual rating score (0-30 scale)
 - `wmh_segmentation.nii.gz`: Binary WMH mask
-- `class_activation_map.nii.gz`: Model attention map
 
 ### Requirements
 - **Input**: FLAIR T2-weighted MRI volume
 - **Format**: NIfTI (.nii/.nii.gz) or NumPy (.npy)
-- **Hardware**: GPU recommended but CPU works
-
+- **Hardware**: GPU recommended
 
 ## Contact
 
