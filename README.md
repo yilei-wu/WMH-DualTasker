@@ -1,24 +1,8 @@
-Based on the files you've provided, I will draft a `README.md` file that outlines the purpose, setup, and usage of your project.
-
----
-
 # WMH-Dual Tasker
 
 ## Overview
 
-This project, titled **WMH-Dual Tasker**, is designed to tackle the challenges of jointly weakly-supervised white matter hyperintensity (WMH) segmentation and visual rating with self-supervised consistency. The framework incorporates several components for training, evaluation, and analysis, such as generating Class Activation Maps (CAMs) and specialized loss functions.
-
-## Project Structure
-
-- **train.py**: Script for training the model on the dataset.
-- **evaluate_single.py**: Script for evaluating the model on a single subject.
-- **evaluate_seg.py**: Script for evaluating segmentation results.
-- **evaluate_study.py**: Script for evaluating the model performance across multiple subjects.
-- **generate_CAM.py**: Script to generate Class Activation Maps (CAMs) for model interpretability.
-- **utils.py**: Utility functions used across different modules.
-- **mypath.py**: Configurations for dataset paths and other settings.
-- **loss.py**: Custom loss functions used in the training process.
-- **trainer.py**: Main training loop and logic for model training.
+**WMH-Dual Tasker** performs both white matter hyperintensity (WMH) visual rating and segmentation from FLAIR MRI volumes using a single deep learning model.
 
 ## Setup
 
@@ -28,74 +12,54 @@ This project, titled **WMH-Dual Tasker**, is designed to tackle the challenges o
    cd WMH-DualTasker
    ```
 
-2. **Install Required Dependencies:**
-   It's recommended to create a virtual environment and install the required Python packages using the provided `requirements.txt`.
+2. **Install Dependencies:**
    ```bash
-   pip install -r requirements.txt
+   pip install torch torchvision nibabel numpy scipy scikit-learn matplotlib tqdm
    ```
 
-3. **Dataset Configuration:**
-   Update `mypath.py` to include the paths to your datasets and other configuration details.
+## Model Download
 
-## Training
+Download the pre-trained model weights:
+- **Model weights**: [Download here](https://your-download-link.com/model_weights.pth)
+- Place the downloaded `.pth` file in your desired location
 
-To train the model, use the `train.py` script. You can customize the training parameters directly in the script or pass them as arguments.
+## Inference
 
+Use the `inference.py` script to get both visual rating score and WMH segmentation from FLAIR volumes:
+
+### Basic Usage
 ```bash
-python train.py --epochs 50 --batch_size 8
+python inference.py --input /path/to/flair_volume.nii.gz \
+                   --model_path /path/to/model_weights.pth
 ```
 
-## Evaluation
-
-### 1. Evaluate a Single Subject
-To evaluate the model on a single subject, run the following command:
-
+### With Brain Mask (Recommended)
 ```bash
-python evaluate_single.py --subject_id <SUBJECT_ID>
+python inference.py --input /path/to/flair_volume.nii.gz \
+                   --model_path /path/to/model_weights.pth \
+                   --brain_mask /path/to/brain_mask.nii.gz \
+                   --normalize
 ```
 
-### 2. Evaluate Segmentation Results
-For evaluating segmentation performance:
+### Parameters
+- `--input`: Path to FLAIR volume (.nii/.nii.gz/.npy)
+- `--model_path`: Path to downloaded model weights (.pth)
+- `--brain_mask`: Brain mask (optional, improves accuracy)
+- `--output_dir`: Output directory (default: ./wmh_output)
+- `--normalize`: Apply intensity normalization (recommended)
+- `--model_type`: Model architecture (default: sfcn_rep1)
 
-```bash
-python evaluate_seg.py --data_dir <DATA_DIRECTORY>
-```
+### Outputs
+- `visual_rating.txt`: Visual rating score (0-30 scale)
+- `wmh_segmentation.nii.gz`: Binary WMH mask
+- `class_activation_map.nii.gz`: Model attention map
 
-### 3. Evaluate Across Multiple Subjects
-For comprehensive evaluation across multiple subjects:
+### Requirements
+- **Input**: FLAIR T2-weighted MRI volume
+- **Format**: NIfTI (.nii/.nii.gz) or NumPy (.npy)
+- **Hardware**: GPU recommended but CPU works
 
-```bash
-python evaluate_study.py --study_dir <STUDY_DIRECTORY>
-```
-
-## Generate CAMs
-
-To generate Class Activation Maps (CAMs) for model interpretability, use:
-
-```bash
-python generate_CAM.py --subject_id <SUBJECT_ID> --layer <LAYER_NAME>
-```
-
-## Custom Loss Functions
-
-The custom loss functions are defined in `loss.py`. You can modify them as needed to experiment with different loss strategies.
-
-## Utilities
-
-Additional utility functions for data preprocessing, augmentation, and evaluation metrics are available in `utils.py`.
-
-## Contributing
-
-If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Contact
 
-For any inquiries or issues, please contact [Yilei Wu](mailto:ucs@nus.edu.sg).
-
----
-
-Let me know if you'd like to add or modify any section of this `README.md`!
+For questions or issues, contact [Yilei Wu](yilei.wu@u.nus.edu).
